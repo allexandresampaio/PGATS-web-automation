@@ -1,0 +1,13 @@
+TIPO        MAPEAMENTO CYPRESS
+
+TAG         h1, div, button, input
+ID          #city
+CLASSE      .form-control
+ATRIBUTO    [data-qa=city]
+
+Exemplos e mesclagens:
+tag+id
+input#city
+
+headless ➜ npx cypress run
+abrindo em tela ➜ npx cypress open
