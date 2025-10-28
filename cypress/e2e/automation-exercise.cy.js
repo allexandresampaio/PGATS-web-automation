@@ -67,7 +67,7 @@ describe ('Automation Exercise', () => {
         cy.get('input[data-qa=login-password]').type(password_existente)
         cy.contains('button', 'Login').click()
         cy.get('a[href="/logout"]').should('have.text', ' Logout')
-        cy.get(':nth-child(10) > a').should('have.text', ' Logged in as QA Tester')
+        cy.get('i.fa-user').parent().should('contain', 'QA Tester')
     })
 
     it ('Login user with INcorrect email and password', () => {
