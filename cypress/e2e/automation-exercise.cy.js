@@ -1,6 +1,25 @@
 /// <reference types="cypress" />
 
+/*
+Hooks
+    before -> 1x antes de todos
+    beforEach -> antes de cada um
+    after -> 1x depois de todos
+    afterEach -> depois de cada um
+
+    
+
+*/
+
 describe ('Automation Exercise', () => {
+
+    beforeEach(() => {
+        //cy.viewport("iphone-xr") -> para definir o tamanho da tela do navegador nos testes por modelo 
+        //cy.viewport(300, 500) -> para definir o tamanho da tela do navegador nos testes por tamanho de tela
+        cy.visit('https://automationexercise.com/')
+
+    });
+
     const timestamp = new Date().getTime()
     let email = `QAtesteralle-${timestamp}@mail.com`
     let password = '12345'
@@ -9,12 +28,6 @@ describe ('Automation Exercise', () => {
 
     it ('Cadastrar um usuário', () => {
         
-
-        //cy.viewport("iphone-xr") -> para definir o tamanho da tela do navegador nos testes por modelo 
-        //cy.viewport(300, 500) -> para definir o tamanho da tela do navegador nos testes por tamanho de tela
-
-        cy.visit('https://automationexercise.com/')
-
         cy.get('a[href="/login"]').click() //buscando o item pelo filtro que bate apenas no likn que buscamos em seguida = atributo
 
         cy.get('input[data-qa=signup-name]').type('QA Tester')//tipo input 
@@ -61,7 +74,6 @@ describe ('Automation Exercise', () => {
     })
 
     it ('Login user with correct email and password', () => {
-        cy.visit('https://automationexercise.com/')
         cy.get('a[href="/login"]').click()
         cy.get('input[data-qa=login-email]').type(email_existente)
         cy.get('input[data-qa=login-password]').type(password_existente)
@@ -71,7 +83,6 @@ describe ('Automation Exercise', () => {
     })
 
     it ('Login user with INcorrect email and password', () => {
-        cy.visit('https://automationexercise.com/')
         cy.get('a[href="/login"]').click()
         cy.get('input[data-qa=login-email]').type("emailMaluco15271536@mailcom")
         cy.get('input[data-qa=login-password]').type("password")
@@ -80,7 +91,6 @@ describe ('Automation Exercise', () => {
     })
 
     it ('Logout user', () => {
-        cy.visit('https://automationexercise.com/')
         cy.get('a[href="/login"]').click()
         cy.get('input[data-qa=login-email]').type(email_existente)
         cy.get('input[data-qa=login-password]').type(password_existente)
@@ -94,8 +104,6 @@ describe ('Automation Exercise', () => {
     })
 
     it ('Cadastrar um usuário com email já existente', () => {
-        
-        cy.visit('https://automationexercise.com/')
         cy.get('a[href="/login"]').click() //buscando o item pelo filtro que bate apenas no likn que buscamos em seguida = atributo
         cy.get('input[data-qa=signup-name]').type('QA Tester')//tipo input 
         cy.get('input[data-qa=signup-email]').type(email_existente)
