@@ -9,6 +9,8 @@ Hooks
 */
 
 import userData from "../fixtures/example.json"
+import {getRandomNumberByDate, getRandomEmail} from "../support/helpers"
+import { faker } from '@faker-js/faker';
 
 describe ('Automation Exercise', () => {
 
@@ -19,15 +21,21 @@ describe ('Automation Exercise', () => {
 
     });
 
-    const timestamp = new Date().getTime()
-    let email = `QAtesteralle-${timestamp}@mail.com`
+    //const timestamp = getRandomNumberByDate
+    //let email = getRandomEmail()
     let email_existente = 'qatesteralle@test.com'
 
     it ('Cadastrar um usuário', () => {
         
         cy.get('a[href="/login"]').click() //buscando o item pelo filtro que bate apenas no likn que buscamos em seguida = atributo
 
-        cy.get('input[data-qa=signup-name]').type(userData.name)//tipo input 
+        cy.get('input[data-qa=signup-name]').type(faker.person.fullName())//tipo input 
+        
+        //aqui estou concatenando um numero aleatorio do meu helper
+        //com o email do Faker para não ter risco de criar um email já existente
+        let email = getRandomNumberByDate()
+        email += faker.internet.email()
+        //cy.log (`Email: ${email}`)
         
         cy.get('input[data-qa=signup-email]').type(email)
         //cy.get('[data-qa=signup-button]').click()
@@ -36,7 +44,7 @@ describe ('Automation Exercise', () => {
         cy.get('input[type=radio]').check('Mrs')//buscando pelo conteudo e check
         //cy.get('#id_gender2').check()//buscando direto pelo id e check
 
-        cy.get('input#password').type(userData.password, {log: false}) //log: false -> para não mostrar a senha no relatório de teste
+        cy.get('input#password').type(faker.internet.password(), {log: false}) //log: false -> para não mostrar a senha no relatório de teste
 
         //para comboboxes ou selects -> select
         cy.get('select[data-qa=days]').select(19) //tipo=select e data-qa=days 
@@ -48,16 +56,16 @@ describe ('Automation Exercise', () => {
         cy.get('input[type=checkbox]#optin').check()
 
         // preenchendo form completo e criando conta
-        cy.get('input#first_name').type('Allezinho')
-        cy.get('input#last_name').type('Tester')
-        cy.get('input#company').type('TestersHive')
-        cy.get('input#address1').type('Rua dos Testadores')
-        cy.get('input#address2').type('777')
+        cy.get('input#first_name').type(faker.person.firstName())
+        cy.get('input#last_name').type(faker.person.lastName())
+        cy.get('input#company').type(faker.company.name())
+        cy.get('input#address1').type(faker.location.street())
+        cy.get('input#address2').type(faker.location.buildingNumber())
         cy.get('select#country').select('Singapore')
-        cy.get('input#state').type('Testambuco')
-        cy.get('input#city').type('Testolândia')
-        cy.get('input#zipcode').type('1234321')
-        cy.get('input#mobile_number').type('99888776655')
+        cy.get('input#state').type(faker.location.state())
+        cy.get('input#city').type(faker.location.city())
+        cy.get('input#zipcode').type(faker.location.zipCode())
+        cy.get('input#mobile_number').type(faker.phone.number())
         // cy.contains('button', 'Create Account').click()
         cy.get('[data-qa="create-account"]').click()
         
@@ -102,7 +110,7 @@ describe ('Automation Exercise', () => {
 
     it ('Cadastrar um usuário com email já existente', () => {
         cy.get('a[href="/login"]').click() //buscando o item pelo filtro que bate apenas no likn que buscamos em seguida = atributo
-        cy.get('input[data-qa=signup-name]').type('QA Tester')//tipo input 
+        cy.get('input[data-qa=signup-name]').type(faker.person.fullName())//tipo input 
         cy.get('input[data-qa=signup-email]').type(email_existente)
         cy.contains('button', 'Signup').click()
         cy.get('.signup-form > form > p').should('have.text', 'Email Address already exist!')
@@ -110,15 +118,20 @@ describe ('Automation Exercise', () => {
 
     it ('Enviar um formulário de Contato', () => {
         cy.get('a[href="/contact_us"]').click()
-        cy.get('[data-qa="name"]').type(userData.name)
-        cy.get('[data-qa="email"]').type(userData.email)
-        cy.get('[data-qa="subject"]').type(userData.subject)
-        cy.get('[data-qa="message"]').type(userData.message)
-        cy.fixture('example.json').as('arquivo')
+        cy.get('[data-qa="name"]').type(faker.person.fullName())
+        cy.get('[data-qa="email"]').type(faker.internet.email())
+        cy.get('[data-qa="subject"]').type(faker.lorem.sentence())
+        cy.get('[data-qa="message"]').type(faker.lorem.paragraph())
+        cy.fixture('example.json').as('arquivo') //posso ignorar esse alias e na linha seguinte chamar pelo caminho completo do arquiso, se quiser 
         cy.get('input[type=file]').selectFile('@arquivo')
         cy.get('[data-qa="submit-button"]').click()
         cy.get('.status').should('be.visible')
         cy.get('.status').should('have.text', 'Success! Your details have been submitted successfully.')
 
+    })
+
+    it ('Exemplos de Logs', () => {
+        cy.log(`getRandomNumber: ${getRandomNumberByDate()}`)
+        cy.log(`getRandomEmail: ${getRandomEmail()}`)
     })
 })
