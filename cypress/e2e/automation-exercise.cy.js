@@ -117,6 +117,7 @@ describe ('Automation Exercise', () => {
         cy.fixture('example.json').as('arquivo')
         cy.get('input[type=file]').selectFile('@arquivo')
         cy.get('[data-qa="submit-button"]').click()
+        cy.get('.status').should('be.visible')
         cy.get('.status').should('have.text', 'Success! Your details have been submitted successfully.')
 
     })
