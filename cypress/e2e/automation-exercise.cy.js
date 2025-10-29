@@ -47,7 +47,7 @@ describe ('Automation Exercise', () => {
 
         //para comboboxes ou selects -> select
         cy.get('select[data-qa=days]').select(19) //tipo=select e data-qa=days 
-        cy.get('select[data-qa=months]').select('April')
+        cy.get('select[data-qa=months]').select(faker.date.month())
         cy.get('select[data-qa=years]').select('1993')
         
     //radio ou checkboxes -> check

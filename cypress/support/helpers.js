@@ -7,5 +7,5 @@ export function getRandomNumber(){
 }
 
 export function getRandomEmail(){
-    return `qa-tester-${getRandomNumberByDate()}@test.com`
+    return `qa-tester-${getRandomNumber()}@test.com`
 }
