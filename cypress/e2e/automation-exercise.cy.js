@@ -25,7 +25,7 @@ describe ('Automation Exercise', () => {
     //let email = getRandomEmail()
     let email_existente = 'qatesteralle@test.com'
 
-    it.only ('Cadastrar um usuário', () => {
+    it ('Cadastrar um usuário', () => {
         
         cy.get('a[href="/login"]').click() //buscando o item pelo filtro que bate apenas no likn que buscamos em seguida = atributo
 
