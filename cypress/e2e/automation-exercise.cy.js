@@ -6,10 +6,9 @@ Hooks
     beforEach -> antes de cada um
     after -> 1x depois de todos
     afterEach -> depois de cada um
-
-    
-
 */
+
+import userData from "../fixtures/example.json"
 
 describe ('Automation Exercise', () => {
 
@@ -22,15 +21,13 @@ describe ('Automation Exercise', () => {
 
     const timestamp = new Date().getTime()
     let email = `QAtesteralle-${timestamp}@mail.com`
-    let password = '12345'
     let email_existente = 'qatesteralle@test.com'
-    let password_existente = '12345'
 
     it ('Cadastrar um usuário', () => {
         
         cy.get('a[href="/login"]').click() //buscando o item pelo filtro que bate apenas no likn que buscamos em seguida = atributo
 
-        cy.get('input[data-qa=signup-name]').type('QA Tester')//tipo input 
+        cy.get('input[data-qa=signup-name]').type(userData.name)//tipo input 
         
         cy.get('input[data-qa=signup-email]').type(email)
         //cy.get('[data-qa=signup-button]').click()
@@ -39,7 +36,7 @@ describe ('Automation Exercise', () => {
         cy.get('input[type=radio]').check('Mrs')//buscando pelo conteudo e check
         //cy.get('#id_gender2').check()//buscando direto pelo id e check
 
-        cy.get('input#password').type(password, {log: false}) //log: false -> para não mostrar a senha no relatório de teste
+        cy.get('input#password').type(userData.password, {log: false}) //log: false -> para não mostrar a senha no relatório de teste
 
         //para comboboxes ou selects -> select
         cy.get('select[data-qa=days]').select(19) //tipo=select e data-qa=days 
@@ -76,7 +73,7 @@ describe ('Automation Exercise', () => {
     it ('Login user with correct email and password', () => {
         cy.get('a[href="/login"]').click()
         cy.get('input[data-qa=login-email]').type(email_existente)
-        cy.get('input[data-qa=login-password]').type(password_existente)
+        cy.get('input[data-qa=login-password]').type(userData.password)
         cy.contains('button', 'Login').click()
         cy.get('a[href="/logout"]').should('have.text', ' Logout')
         cy.get('i.fa-user').parent().should('contain', 'QA Tester')
@@ -93,7 +90,7 @@ describe ('Automation Exercise', () => {
     it ('Logout user', () => {
         cy.get('a[href="/login"]').click()
         cy.get('input[data-qa=login-email]').type(email_existente)
-        cy.get('input[data-qa=login-password]').type(password_existente)
+        cy.get('input[data-qa=login-password]').type(userData.password)
         cy.contains('button', 'Login').click()
         cy.get('a[href="/logout"]').should('have.text', ' Logout')
         cy.get(':nth-child(10) > a').should('have.text', ' Logged in as QA Tester')
