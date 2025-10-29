@@ -9,7 +9,7 @@ Hooks
 */
 
 import userData from "../fixtures/example.json"
-import {getRandomNumberByDate, getRandomEmail} from "../support/helpers"
+import {getRandomNumber, getRandomEmail} from "../support/helpers"
 import { faker } from '@faker-js/faker';
 
 describe ('Automation Exercise', () => {
@@ -25,7 +25,7 @@ describe ('Automation Exercise', () => {
     //let email = getRandomEmail()
     let email_existente = 'qatesteralle@test.com'
 
-    it ('Cadastrar um usuário', () => {
+    it.only ('Cadastrar um usuário', () => {
         
         cy.get('a[href="/login"]').click() //buscando o item pelo filtro que bate apenas no likn que buscamos em seguida = atributo
 
@@ -33,8 +33,7 @@ describe ('Automation Exercise', () => {
         
         //aqui estou concatenando um numero aleatorio do meu helper
         //com o email do Faker para não ter risco de criar um email já existente
-        let email = getRandomNumberByDate()
-        email += faker.internet.email()
+        let email = faker.internet.email({firstName: 'alle-tests-pgats'})
         //cy.log (`Email: ${email}`)
         
         cy.get('input[data-qa=signup-email]').type(email)
