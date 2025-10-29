@@ -10,7 +10,7 @@ Hooks
 
 import userData from "../fixtures/example.json"
 import {getRandomNumber, getRandomEmail} from "../support/helpers"
-import { faker } from '@faker-js/faker';
+import { faker, fakerPT_BR } from '@faker-js/faker';
 
 describe ('Automation Exercise', () => {
 
@@ -29,7 +29,7 @@ describe ('Automation Exercise', () => {
         
         cy.get('a[href="/login"]').click() //buscando o item pelo filtro que bate apenas no likn que buscamos em seguida = atributo
 
-        cy.get('input[data-qa=signup-name]').type(faker.person.fullName())//tipo input 
+        cy.get('input[data-qa=signup-name]').type(fakerPT_BR.person.fullName())//tipo input 
         
         //aqui estou concatenando um numero aleatorio do meu helper
         //com o email do Faker para não ter risco de criar um email já existente
@@ -130,7 +130,7 @@ describe ('Automation Exercise', () => {
     })
 
     it ('Exemplos de Logs', () => {
-        cy.log(`getRandomNumber: ${getRandomNumberByDate()}`)
+        cy.log(`getRandomNumber: ${getRandomNumber()}`)
         cy.log(`getRandomEmail: ${getRandomEmail()}`)
     })
 })
