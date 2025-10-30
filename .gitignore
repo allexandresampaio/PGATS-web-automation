@@ -8,6 +8,7 @@ cypress/screenshots/
 # Relatórios
 mochawesome-report/
 coverage/
+reports/
 
 # Arquivos de ambiente
 .env
