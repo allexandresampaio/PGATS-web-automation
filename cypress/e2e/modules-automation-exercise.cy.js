@@ -1,10 +1,10 @@
 /// <reference types="cypress" />
 
 import userData from "../fixtures/example.json"
-import { fazerLogout, navegarParaContactUs, navegarParaLogin } from "../modules/menu";
-import { preencherFormularioSignup, preencherFormularioSignupCustom, preencherSegundaPaginaFormSignup } from "../modules/signup";
-import { preencherFormularioLogin } from "../modules/login";
-import { enviarFormContato } from "../modules/contact";
+import menu from "../modules/menu";
+import signup from "../modules/signup";
+import login from "../modules/login";
+import contact from "../modules/contact";
 
 describe ('Automation Exercise', () => {
 
@@ -13,46 +13,46 @@ describe ('Automation Exercise', () => {
     });
 
     it ('Cadastrar um usuário', () => {  
-        navegarParaLogin()
-        preencherFormularioSignup ()       
-        preencherSegundaPaginaFormSignup()        
+        menu.navegarParaLogin()
+        signup.preencherFormularioSignup ()       
+        signup.preencherSegundaPaginaFormSignup()        
         cy.url().should('includes', 'account_created') // -> mostra como asserção pois esse comando should é uma asserção
         cy.contains('b', 'Account Created!') // -> não mostra como asserção pois não é a finalidade do comando 
         cy.get('h2[data-qa="account-created"]').should('have.text', 'Account Created!')
     })
 
     it ('Login user with correct email and password', () => {
-        navegarParaLogin()
-        preencherFormularioLogin(userData.email, userData.password)
+        menu.navegarParaLogin()
+        login.preencherFormularioLogin(userData.email, userData.password)
         cy.get('a[href="/logout"]').should('have.text', ' Logout')
         cy.get('i.fa-user').parent().should('contain', 'QA Tester')
     })
 
     it ('Login user with INcorrect email and password', () => {
-        navegarParaLogin()
-        preencherFormularioLogin("emailMaluco15271536@mailcom", "password")
+        menu.navegarParaLogin()
+        login.preencherFormularioLogin("emailMaluco15271536@mailcom", "password")
         cy.get('.login-form > form > p').should('have.text', 'Your email or password is incorrect!')
     })
 
     it ('Logout user', () => {
-        navegarParaLogin()
-        preencherFormularioLogin(userData.email, userData.password)
+        menu.navegarParaLogin()
+        login.preencherFormularioLogin(userData.email, userData.password)
         cy.get('a[href="/logout"]').should('have.text', ' Logout')
         cy.get(':nth-child(10) > a').should('have.text', ' Logged in as QA Tester')
-        fazerLogout()
+        menu.fazerLogout()
         cy.url().should('includes', 'login')
         cy.get('.login-form > h2').should('have.text', 'Login to your account')
     })
 
     it ('Cadastrar um usuário com email já existente', () => {
-        navegarParaLogin()
-        preencherFormularioSignupCustom(userData.name, userData.email) 
+        menu.navegarParaLogin()
+        signup.preencherFormularioSignupCustom(userData.name, userData.email) 
         cy.get('.signup-form > form > p').should('have.text', 'Email Address already exist!')
     })
 
     it ('Enviar um formulário de Contato', () => {
-        navegarParaContactUs()
-        enviarFormContato()
+        menu.navegarParaContactUs()
+        contact.enviarFormContato()
         cy.get('.status').should('be.visible')
         cy.get('.status').should('have.text', 'Success! Your details have been submitted successfully.')
     })
