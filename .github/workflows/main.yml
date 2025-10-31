@@ -1,16 +1,21 @@
-name: Cypress Tests
+name: Web E2E tests
 
 on: push
 
 jobs:
-  cypress-run:
-    runs-on: ubuntu-24.04
+  e2e-tests:
+    runs-on: ubuntu-latest
     steps:
+      
+      # clone do projeto pra uma machine
       - name: Checkout
         uses: actions/checkout@v4
+
       # Install npm dependencies, cache them correctly
+      - name: Instalando dependencias
+        run: npm install
+
       # and run all Cypress tests
       - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          start: npm test
+        #uses: cypress-io/github-action@v6
+        run: npm test
