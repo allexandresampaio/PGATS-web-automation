@@ -19,3 +19,12 @@ jobs:
       - name: Cypress run
         #uses: cypress-io/github-action@v6
         run: npm test
+      
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: relatorios
+          path: |
+            cypress/reports
+            cypress/screenshots
+            cypress/videos
