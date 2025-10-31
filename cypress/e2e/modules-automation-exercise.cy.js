@@ -5,6 +5,8 @@ import menu from "../modules/menu";
 import signup from "../modules/signup";
 import login from "../modules/login";
 import contact from "../modules/contact";
+import { faker } from '@faker-js/faker';
+
 
 describe ('Automation Exercise', () => {
 
@@ -55,5 +57,115 @@ describe ('Automation Exercise', () => {
         contact.enviarFormContato()
         cy.get('.status').should('be.visible')
         cy.get('.status').should('have.text', 'Success! Your details have been submitted successfully.')
+    })
+
+    //8
+    it ('Verify All Products and product detail page', () => {
+        menu.navegarParaProdutos()
+        cy.url().should('includes', 'products')
+        cy.get('.title').should('have.text', 'All Products')
+        cy.get(':nth-child(3) > .product-image-wrapper > .choose > .nav > li > a').click()
+        cy.get('.product-information > h2').should('have.text', 'Blue Top')
+        cy.get('.product-information > :nth-child(3)').should('have.text', 'Category: Women > Tops')
+        cy.get(':nth-child(5) > span').should('have.text', 'Rs. 500')
+        cy.get('.product-information > :nth-child(6)').should('have.text', 'Availability: In Stock')
+        cy.get('.product-information > :nth-child(7)').should('have.text', 'Condition: New')
+        cy.get('.product-information > :nth-child(8)').should('have.text', 'Brand: Polo')
+
+    })
+
+    //9
+    it ('Search Product', () => {
+        menu.navegarParaProdutos()
+        cy.url().should('includes', 'products')
+        cy.get('.title').should('have.text', 'All Products')
+        cy.get('#search_product').type('maxi dress')
+        cy.get('#submit_search').click()
+        cy.get('.title').should('have.text', 'Searched Products')
+        cy.get('.productinfo > p').should('have.text', 'Rose Pink Embroidered Maxi Dress')
+    })
+    
+    //10
+    it ('Verify Subscription in home page', () => {
+        cy.scrollTo("bottom")
+        cy.get('.single-widget > h2').should('be.visible')
+        cy.get('#susbscribe_email').type(userData.email)
+        cy.get('#subscribe').click()
+        cy.get('.alert-success').should('be.visible')
+        cy.get('.alert-success').should('have.text', 'You have been successfully subscribed!')
+    })
+    
+    //15
+    it ('Place Order: Register before Checkout', () => {
+        menu.navegarParaLogin()
+        signup.preencherFormularioSignup ()       
+        signup.preencherSegundaPaginaFormSignup()        
+        cy.url().should('includes', 'account_created') 
+        cy.contains('b', 'Account Created!') 
+        cy.get('h2[data-qa="account-created"]').should('have.text', 'Account Created!')
+        cy.get('[data-qa="continue-button"]').click()
+        cy.get(':nth-child(10) > a').should('contain', 'Logged in as')
+        cy.get('.features_items > :nth-child(3) > .product-image-wrapper > .single-products > .productinfo > .btn').click()
+        cy.get('.modal-footer > .btn').click()
+        cy.get(':nth-child(4) > .product-image-wrapper > .single-products > .productinfo > .btn').click()
+        cy.get('u').click()
+        cy.url().should('includes', 'view_cart')
+        cy.get('.col-sm-6 > .btn').click()
+        cy.url().should('includes', 'checkout')
+        cy.get('#address_delivery').should('be.visible')
+        cy.get('#address_invoice').should('be.visible')
+        cy.get(':nth-child(4) > .heading').should('have.text', 'Review Your Order')
+        cy.get('.form-control').type(faker.lorem.sentence())
+        cy.get(':nth-child(7) > .btn').click()
+        cy.url().should('includes', 'payment')
+        cy.get('[data-qa="name-on-card"]').type(faker.finance.creditCardIssuer())
+        cy.get('[data-qa="card-number"]').type(faker.finance.creditCardNumber())
+        cy.get('[data-qa="cvc"]').type(faker.finance.creditCardCVV())
+        cy.get('[data-qa="expiry-month"]').type('04')
+        cy.get('[data-qa="expiry-year"]').type('2035')
+        cy.get('[data-qa="pay-button"]').click()
+        cy.url().should('includes', 'payment_done')
+        cy.get('[data-qa="order-placed"] > b').should('have.text', 'Order Placed!')
+        cy.get('.col-sm-9 > p').should('have.text', 'Congratulations! Your order has been confirmed!')
+        cy.get(':nth-child(5) > a').click()
+        cy.url().should('includes', 'delete_account')
+        cy.get('b').should('have.text', 'Account Deleted!')
+    })
+    
+    //16
+    it ('Place Order: Login before Checkout', () => {
+        menu.navegarParaLogin()
+        let email = signup.preencherFormularioSignup()
+        let senha = signup.preencherSegundaPaginaFormSignup()
+        cy.get('[data-qa="continue-button"]').click()
+        menu.fazerLogout()
+
+        login.preencherFormularioLogin(email, senha)
+        cy.get(':nth-child(10) > a').should('contain', 'Logged in as')
+        cy.get('.features_items > :nth-child(3) > .product-image-wrapper > .single-products > .productinfo > .btn').click()
+        cy.get('.modal-footer > .btn').click()
+        cy.get(':nth-child(4) > .product-image-wrapper > .single-products > .productinfo > .btn').click()
+        cy.get('u').click()
+        cy.url().should('includes', 'view_cart')
+        cy.get('.col-sm-6 > .btn').click()
+        cy.url().should('includes', 'checkout')
+        cy.get('#address_delivery').should('be.visible')
+        cy.get('#address_invoice').should('be.visible')
+        cy.get(':nth-child(4) > .heading').should('have.text', 'Review Your Order')
+        cy.get('.form-control').type(faker.lorem.sentence())
+        cy.get(':nth-child(7) > .btn').click()
+        cy.url().should('includes', 'payment')
+        cy.get('[data-qa="name-on-card"]').type(faker.finance.creditCardIssuer())
+        cy.get('[data-qa="card-number"]').type(faker.finance.creditCardNumber())
+        cy.get('[data-qa="cvc"]').type(faker.finance.creditCardCVV())
+        cy.get('[data-qa="expiry-month"]').type('04')
+        cy.get('[data-qa="expiry-year"]').type('2035')
+        cy.get('[data-qa="pay-button"]').click()
+        cy.url().should('includes', 'payment_done')
+        cy.get('[data-qa="order-placed"] > b').should('have.text', 'Order Placed!')
+        cy.get('.col-sm-9 > p').should('have.text', 'Congratulations! Your order has been confirmed!')
+        cy.get(':nth-child(5) > a').click()
+        cy.url().should('includes', 'delete_account')
+        cy.get('b').should('have.text', 'Account Deleted!')
     })
 })

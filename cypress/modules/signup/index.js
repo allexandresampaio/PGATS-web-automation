@@ -6,6 +6,7 @@ class Signup {
         let email = faker.internet.email({firstName: 'alle-tests-pgats'})
         cy.get('input[data-qa=signup-email]').type(email)
         cy.contains('button', 'Signup').click()
+        return email
     }
 
     preencherFormularioSignupCustom(name, email){
@@ -16,7 +17,8 @@ class Signup {
 
     preencherSegundaPaginaFormSignup(){
         cy.get('input[type=radio]').check('Mrs')//buscando pelo conteudo e check
-        cy.get('input#password').type(faker.internet.password(), {log: false}) //log: false -> para não mostrar a senha no relatório de teste
+        let senha = faker.internet.password()
+        cy.get('input#password').type(senha, {log: false}) //log: false -> para não mostrar a senha no relatório de teste
         cy.get('select[data-qa=days]').select(19) //tipo=select e data-qa=days 
         cy.get('select[data-qa=months]').select(faker.date.month())
         cy.get('select[data-qa=years]').select('1993')
@@ -33,6 +35,7 @@ class Signup {
         cy.get('input#zipcode').type(faker.location.zipCode())
         cy.get('input#mobile_number').type(faker.phone.number())
         cy.get('[data-qa="create-account"]').click()
+        return senha
     }
 }
 

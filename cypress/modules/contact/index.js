@@ -1,4 +1,4 @@
-import { faker, fakerPT_BR } from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 class Contact {
     enviarFormContato(){
