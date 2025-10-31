@@ -15,7 +15,7 @@ describe ('Automation Exercise', () => {
     });
 
     //1
-    it ('Register User', () => {  
+    it ('01. Register User', () => {  
         menu.navegarParaLogin()
         signup.preencherFormularioSignup ()       
         signup.preencherSegundaPaginaFormSignup()        
@@ -25,7 +25,7 @@ describe ('Automation Exercise', () => {
     })
 
     //2
-    it ('Login user with correct email and password', () => {
+    it ('02. Login user with correct email and password', () => {
         menu.navegarParaLogin()
         login.preencherFormularioLogin(userData.email, userData.password)
         cy.get('a[href="/logout"]').should('have.text', ' Logout')
@@ -33,14 +33,14 @@ describe ('Automation Exercise', () => {
     })
 
     //3
-    it ('Login user with INcorrect email and password', () => {
+    it ('03. Login user with INcorrect email and password', () => {
         menu.navegarParaLogin()
         login.preencherFormularioLogin("emailMaluco15271536@mailcom", "password")
         cy.get('.login-form > form > p').should('have.text', 'Your email or password is incorrect!')
     })
 
     //4
-    it ('Logout user', () => {
+    it ('04. Logout user', () => {
         menu.navegarParaLogin()
         login.preencherFormularioLogin(userData.email, userData.password)
         cy.get('a[href="/logout"]').should('have.text', ' Logout')
@@ -51,14 +51,14 @@ describe ('Automation Exercise', () => {
     })
 
     //5
-    it ('Register User with existing email', () => {
+    it ('05. Register User with existing email', () => {
         menu.navegarParaLogin()
         signup.preencherFormularioSignupCustom(userData.name, userData.email) 
         cy.get('.signup-form > form > p').should('have.text', 'Email Address already exist!')
     })
 
     //6
-    it ('Contact Us Form', () => {
+    it ('06. Contact Us Form', () => {
         menu.navegarParaContactUs()
         contact.enviarFormContato()
         cy.get('.status').should('be.visible')
@@ -66,7 +66,7 @@ describe ('Automation Exercise', () => {
     })
 
     //8
-    it ('Verify All Products and product detail page', () => {
+    it ('08. Verify All Products and product detail page', () => {
         menu.navegarParaProdutos()
         cy.url().should('includes', 'products')
         cy.get('.title').should('have.text', 'All Products')
@@ -81,7 +81,7 @@ describe ('Automation Exercise', () => {
     })
 
     //9
-    it ('Search Product', () => {
+    it ('09. Search Product', () => {
         menu.navegarParaProdutos()
         cy.url().should('includes', 'products')
         cy.get('.title').should('have.text', 'All Products')
@@ -92,7 +92,7 @@ describe ('Automation Exercise', () => {
     })
     
     //10
-    it ('Verify Subscription in home page', () => {
+    it ('10. Verify Subscription in home page', () => {
         cy.scrollTo("bottom")
         cy.get('.single-widget > h2').should('be.visible')
         cy.get('#susbscribe_email').type(userData.email)
@@ -102,7 +102,7 @@ describe ('Automation Exercise', () => {
     })
     
     //15
-    it ('Place Order: Register before Checkout', () => {
+    it ('15. Place Order: Register before Checkout', () => {
         menu.navegarParaLogin()
         signup.preencherFormularioSignup ()       
         signup.preencherSegundaPaginaFormSignup()        
@@ -139,7 +139,7 @@ describe ('Automation Exercise', () => {
     })
     
     //16
-    it ('Place Order: Login before Checkout', () => {
+    it ('16. Place Order: Login before Checkout', () => {
         menu.navegarParaLogin()
         let email = signup.preencherFormularioSignup()
         let senha = signup.preencherSegundaPaginaFormSignup()

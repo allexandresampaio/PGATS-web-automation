@@ -4,7 +4,8 @@
   "description": "Repositorio de testes de interface com cypress",
   "main": "index.js",
   "scripts": {
-    "test": "npx cypress run"
+    "test": "npx cypress run",
+    "test-trabalho-final": "npx cypress run --spec cypress/e2e/trabalho-final.cy.js"
   },
   "keywords": [],
   "author": "",
